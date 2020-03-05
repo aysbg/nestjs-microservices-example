@@ -10,9 +10,9 @@ import { UsersModule } from './users/user.module';
     SequelizeModule.forRoot({
       dialect: 'postgres',
       database: 'tc_users',
-      username: 'postgres',
-      password: '',
-      host: 'localhost',
+      username: 'nestjs',
+      password: 'bc',
+      host: 'postgresql',
       port: 5432,
       models: [User],
       autoLoadModels: true,
