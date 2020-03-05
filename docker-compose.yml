@@ -1,0 +1,42 @@
+version: '3'
+services:
+  rabbitmq:
+    image: "rabbitmq:3.8.2-alpine"
+    ports:
+      - "5672:5672"
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq
+  postgresql:
+    image: "postgres:11.2-alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ""
+      POSTGRES_USER: "nestjs"
+    volumes:
+      - ./postgresql-data:/var/lib/postgresql/
+  redis:
+    image: "redis:5.0.7-alpine"
+    ports:
+      - "6379:6379"
+  postgres:
+  # NestJS APPs are defined now
+  webapi:
+    build: ./web-api-server
+    ports:
+    - "4000:3000"
+    depends_on:
+    - redis
+    - rabbitmq
+  userapi:
+    build: ./user-service
+    ports:
+    - "4001:3000"
+    depends_on:
+    - postgres
+  walletapi:
+    build: ./wallet-service
+    ports:
+    - "4002:3000"
+    depends_on:
+    - redis

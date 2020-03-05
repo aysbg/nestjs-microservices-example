@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package user;
+
+service UserController {
+  rpc CreateUser (NewUser) returns (CreatedUser);
+  rpc FindOne (UserId) returns (CreatedUser);
+}
+
+message UserId {
+  int32 id = 1;
+}
+
+message NewUser {
+  string name = 1;
+  string email = 2;
+}
+
+message CreatedUser {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+}
