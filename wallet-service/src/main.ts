@@ -8,7 +8,7 @@ const logger = new Logger('WalletService');
 const microserviceOptions = {
   transport: Transport.REDIS,
   options: {
-    url: 'redis://localhost:6379'
+    url: process.env.REDIS_URL
   }
 };
 

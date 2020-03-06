@@ -19,33 +19,47 @@ services:
   redis:
     image: "redis:5.0.7-alpine"
     ports:
-      - "6379:6379"
+    - "6379:6379"
   # NestJS APPs are defined now
   webapi:
     build: ./web-api-server
     ports:
     - "4000:3000"
-    depends_on:
-    - redis
-    - rabbitmq
-  userapi:
-    build: ./user-service
-    ports:
-    - "4001:3000"
+    restart: always
     environment:
-      NODE_ENV: development
-      DATABASE_URL: postgres://nestjs:bc@postgresql:5432/tc_users
-    depends_on:
-    - postgresql
-  walletapi:
-    build: ./wallet-service
-    ports:
-    - "4002:3000"
+    - REDIS_URL=redis://redis
+    - RMQ_URL=amqp://rabbitmq?connection_attempts=5&retry_delay=5
     depends_on:
     - redis
-  logapi:
-    build: ./log-service
-    ports:
-    - "4003:3000"
-    depends_on:
     - rabbitmq
+  # userapi:
+  #   build: ./user-service
+  #   ports:
+  #   - "4001:3000"
+  #   restart: always
+  #   environment:
+  #     NODE_ENV: development
+  #     DATABASE_URL: postgres://nestjs:bc@postgresql:5432/tc_users
+  #   depends_on:
+  #   - webapi
+  #   - postgresql
+  # walletapi:
+  #   build: ./wallet-service
+  #   ports:
+  #   - "4002:3000"
+  #   environment:
+  #   - REDIS_URL=redis://redis
+  #   restart: always
+  #   depends_on:
+  #   - webapi
+  #   - redis
+  # logapi:
+  #   build: ./log-service
+  #   ports:
+  #   - "4003:3000"
+  #   environment:
+  #   - RMQ_URL=amqp://rabbitmq?connection_attempts=5&retry_delay=5
+  #   restart: always
+  #   depends_on:
+  #   - webapi
+  #   - rabbitmq

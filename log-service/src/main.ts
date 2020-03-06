@@ -8,8 +8,8 @@ const logger = new Logger('Main');
 const microserviceOptions = {
   transport: Transport.RMQ,
   options: {
-    urls: ['amqp://localhost:5672'],
-    queue: 'cats_queue',
+    urls: [process.env.RMQ_URL],
+    queue: 'logs_queue',
     queueOptions: {
       durable: false
     },
